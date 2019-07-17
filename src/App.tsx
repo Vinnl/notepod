@@ -1,11 +1,23 @@
 import React from 'react';
+import { LoggedOut, LoginButton, LoggedIn } from '@solid/react';
+import { Dashboard } from './components/Dashboard';
 
 const App: React.FC = () => {
-  return (
+  return <>
     <React.StrictMode>
-      <p>This is a basic app that can use <a href="https://bulma.io/" title="The Bulma CSS framework">Bulma</a> for styling.</p>
+      <LoggedOut>
+        <section className="section">
+          <p className="content">Please connect to your Pod to start taking notes.</p>
+          <p className="content">
+            <LoginButton popup="popup.html" className="button is-large is-primary">Connect</LoginButton>
+          </p>
+        </section>
+      </LoggedOut>
+      <LoggedIn>
+        <Dashboard/>
+      </LoggedIn>
     </React.StrictMode>
-  );
+  </>;
 }
 
 export default App;
