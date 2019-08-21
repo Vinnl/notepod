@@ -2,28 +2,23 @@ import React from 'react';
 import { LogoutButton } from '@solid/react';
 import { foaf } from 'rdf-namespaces';
 import { useProfile } from '../hooks/useProfile';
-import { useNotesList, getNotes  } from '../hooks/useNotesList';
+import { NotesList } from './NotesList';
 
 export const Dashboard: React.FC = () => {
   const profile = useProfile();
-  const notesList = useNotesList();
 
   const name = (profile) ? profile.getString(foaf.name) : null;
-  const greeting = (name)
-    ? `Hi ${name}`
-    : 'Hi';
-
-  const noteCount = notesList
-    ? <p>You have {getNotes(notesList).length} notes.</p>
-    : null;
+  const title = (name)
+    ? `Public notes by ${name}`
+    : 'Public notes';
 
   return <>
     <section className="section">
-      <p>
-        {greeting}
-      </p>
-      {noteCount}
+      <h1 className="title">
+        {title}
+      </h1>
     </section>
+    <NotesList/>
     <footer className="footer has-text-right">
       <LogoutButton className="button"/>
     </footer>
