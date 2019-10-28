@@ -26,6 +26,10 @@ export const Note: React.FC<Props> = (props) => {
     setIsSubmitting(false);
   };
 
+  const cancelEdit: React.MouseEventHandler = (event) => {
+    setIsEditing(false);
+  };
+
   if (isEditing) {
     const isLoading = isSubmitting ? 'is-loading' : '';
 
@@ -43,13 +47,18 @@ export const Note: React.FC<Props> = (props) => {
             />
           </div>
         </div>
-        <div className="field">
+        <div className="field is-grouped">
           <div className="control">
             <button
               type="submit"
               className={`button is-primary ${isLoading}`}
               disabled={isSubmitting}
             >Save</button>
+          </div>
+          <div className="control">
+            <button onClick={cancelEdit} className="button is-text">
+              Cancel
+            </button>
           </div>
         </div>
       </form>
