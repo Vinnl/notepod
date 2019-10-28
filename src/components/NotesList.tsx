@@ -3,6 +3,7 @@ import { addNote } from '../services/addNote';
 import { getNotes, useNotesList } from '../hooks/useNotesList';
 import { TripleSubject, TripleDocument } from 'tripledoc';
 import { schema } from 'rdf-namespaces';
+import { Note } from './Note';
 
 export const NotesList: React.FC = () => {
   const notesList = useNotesList();
@@ -24,12 +25,25 @@ export const NotesList: React.FC = () => {
     setFormContent('');
   }
 
+  async function editNote(content: string, note: TripleSubject) {
+    const notesDocument = updatedNotesList || notesList;
+    if (!notesDocument) {
+      return;
+    }
+
+    note.setLiteral(schema.text, content);
+    note.setLiteral(schema.dateModified, new Date(Date.now()));
+    const updatedDoc = await notesDocument.save();
+    setUpdatedNotesList(updatedDoc);
+    return updatedDoc.getSubject(note.asRef());
+  }
+
   const noteElements = notes.sort(byDate).map((note) => (
-    <article key={note.asRef()} className="card content">
-      <pre>
-        {note.getString(schema.text)}
-      </pre>
-    </article>
+    <Note
+      key={note.asRef()}
+      note={note}
+      onChange={(updatedContent) => editNote(updatedContent, note)}
+    />
   ));
 
   return (
