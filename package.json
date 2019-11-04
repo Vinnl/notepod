@@ -15,6 +15,7 @@
     "rdf-namespaces": "^1.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-markdown": "^4.2.2",
     "react-scripts": "3.0.1",
     "solid-auth-client": "^2.3.0",
     "tripledoc": "^2.2.0",

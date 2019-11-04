@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import { TripleSubject } from 'tripledoc';
 import { schema } from 'rdf-namespaces';
 
@@ -67,14 +68,14 @@ export const Note: React.FC<Props> = (props) => {
 
   return <>
     <article
-      className="card content"
+      className="card"
       role="button"
       style={{cursor: 'pointer'}}
       onClick={() => setIsEditing(true)}
     >
-      <pre>
-        {note}
-      </pre>
+      <div className="section content">
+        <Markdown source={note || ''}/>
+      </div>
     </article>
   </>;
 };
