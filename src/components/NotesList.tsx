@@ -38,12 +38,35 @@ export const NotesList: React.FC = () => {
     return updatedDoc.getSubject(note.asRef());
   }
 
+  async function deleteNote(note: TripleSubject) {
+    const notesDocument = updatedNotesList || notesList;
+    if (!notesDocument) {
+      return;
+    }
+
+    notesDocument.removeSubject(note.asRef());
+    const updatedDoc = await notesDocument.save();
+    setUpdatedNotesList(updatedDoc);
+  }
+
   const noteElements = notes.sort(byDate).map((note) => (
-    <Note
-      key={note.asRef()}
-      note={note}
-      onChange={(updatedContent) => editNote(updatedContent, note)}
-    />
+    <div key={note.asRef()} className="media">
+      <div className="media-content">
+        <Note
+          note={note}
+          onChange={(updatedContent) => editNote(updatedContent, note)}
+        />
+        <p className="has-text-right">
+          <button
+            aria-label="Delete this note"
+            onClick={() => deleteNote(note)}
+            title="Delete this note"
+            className="button is-text"
+            style={{textDecoration: 'none'}}
+          >🗙</button>
+        </p>
+      </div>
+    </div>
   ));
 
   return (
