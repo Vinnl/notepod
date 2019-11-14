@@ -19,8 +19,18 @@ export const Dashboard: React.FC = () => {
       </h1>
     </section>
     <NotesList/>
-    <footer className="footer has-text-right">
-      <LogoutButton className="button"/>
+    <footer className="footer">
+      <div className="columns">
+        <p className="column content">
+          <a
+            href="https://gitlab.com/vincenttunru/notepod/"
+            title="View the source code on GitLab"
+          >Source code</a>
+        </p>
+        <div className="column has-text-right">
+          <LogoutButton className="button"/>
+        </div>
+      </div>
     </footer>
   </>;
 };
