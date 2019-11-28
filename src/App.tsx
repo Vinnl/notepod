@@ -1,6 +1,7 @@
 import React from 'react';
-import { LoggedOut, LoginButton, LoggedIn } from '@solid/react';
+import { LoggedOut, LoggedIn } from '@solid/react';
 import { Dashboard } from './components/Dashboard';
+import { PodConnecter } from './components/PodConnecter';
 
 const App: React.FC = () => {
   return <>
@@ -9,7 +10,7 @@ const App: React.FC = () => {
         <section className="section">
           <p className="content">Please connect to your Pod to start taking notes.</p>
           <p className="content">
-            <LoginButton popup="popup.html" className="button is-large is-primary">Connect</LoginButton>
+            <PodConnecter/>
           </p>
         </section>
       </LoggedOut>
