@@ -13,14 +13,14 @@ export const NotesList: React.FC = () => {
   if (!notesList) {
     return null;
   }
-  const notes = getNotes(updatedNotesList || notesList);
+  const notes = getNotes(updatedNotesList ?? notesList);
 
   async function saveNote(event: React.FormEvent) {
     event.preventDefault();
     if (!notesList) {
       return;
     }
-    const updatedDoc = await addNote(formContent, updatedNotesList || notesList);
+    const updatedDoc = await addNote(formContent, updatedNotesList ?? notesList);
     setUpdatedNotesList(updatedDoc);
     setFormContent('');
   }
