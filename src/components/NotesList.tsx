@@ -20,7 +20,7 @@ export const NotesList: React.FC = () => {
     if (!notesList) {
       return;
     }
-    const updatedDoc = await addNote(formContent, notesList);
+    const updatedDoc = await addNote(formContent, updatedNotesList || notesList);
     setUpdatedNotesList(updatedDoc);
     setFormContent('');
   }
