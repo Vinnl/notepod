@@ -4,6 +4,7 @@ import { getNotes, useNotesList } from '../hooks/useNotesList';
 import { TripleSubject, TripleDocument } from 'tripledoc';
 import { schema } from 'rdf-namespaces';
 import { Note } from './Note';
+import deleteIcon from 'material-design-icons/action/svg/production/ic_delete_48px.svg';
 
 export const NotesList: React.FC = () => {
   const notesList = useNotesList();
@@ -58,12 +59,15 @@ export const NotesList: React.FC = () => {
         />
         <p className="has-text-right">
           <button
-            aria-label="Delete this note"
             onClick={() => deleteNote(note)}
             title="Delete this note"
             className="button is-text"
             style={{textDecoration: 'none'}}
-          >🗙</button>
+          >
+            <span className="icon is-small">
+              <img src={deleteIcon} alt="Delete this note"/>
+            </span>
+          </button>
         </p>
       </div>
     </div>

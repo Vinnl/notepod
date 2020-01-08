@@ -11,6 +11,7 @@
     "@types/solid-auth-client": "^2.3.0",
     "@types/solid__react": "^1.6.1",
     "bulma": "^0.7.5",
+    "material-design-icons": "^3.0.1",
     "node-sass": "^4.12.0",
     "rdf-namespaces": "^1.5.0",
     "react": "^16.8.6",
