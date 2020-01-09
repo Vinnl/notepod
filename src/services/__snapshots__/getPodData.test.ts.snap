@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPodData should provide the route to the Notes Document 1`] = `
+Object {
+  "acl": Object {},
+  "fallbackContainer": Object {
+    "predicate": "http://www.w3.org/ns/pim/space#storage",
+    "subject": Object {
+      "reference": "https://arbitrary.pod/profile.ttl#webid",
+      "type": "IsFoundAt",
+    },
+    "type": "IsFoundOn",
+  },
+  "predicate": "http://www.w3.org/ns/solid/terms#instance",
+  "subject": Object {
+    "document": Object {
+      "predicate": "http://www.w3.org/ns/solid/terms#publicTypeIndex",
+      "subject": Object {
+        "reference": "https://arbitrary.pod/profile.ttl#webid",
+        "type": "IsFoundAt",
+      },
+      "type": "IsFoundOn",
+    },
+    "locator": Object {
+      "references": Array [
+        Object {
+          "object": "http://www.w3.org/ns/solid/terms#TypeRegistration",
+          "predicate": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        },
+        Object {
+          "object": "http://schema.org/TextDigitalDocument",
+          "predicate": "http://www.w3.org/ns/solid/terms#forClass",
+        },
+      ],
+    },
+    "type": "IsEnsuredIn",
+  },
+  "type": "IsEnsuredOn",
+}
+`;
+
+exports[`getPodData should provide the route to the Profile Document 1`] = `
+Object {
+  "reference": "https://arbitrary.pod/profile.ttl#webid",
+  "type": "IsFoundAt",
+}
+`;
+
+exports[`getPodData should provide the route to the Public Type Index 1`] = `
+Object {
+  "predicate": "http://www.w3.org/ns/solid/terms#publicTypeIndex",
+  "subject": Object {
+    "reference": "https://arbitrary.pod/profile.ttl#webid",
+    "type": "IsFoundAt",
+  },
+  "type": "IsFoundOn",
+}
+`;

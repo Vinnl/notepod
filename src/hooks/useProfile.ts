@@ -1,18 +1,23 @@
 import React from 'react';
-import { TripleSubject } from 'tripledoc';
-import { fetchProfile } from '../services/fetchProfile';
+import { PodData } from '../services/getPodData';
+import { TripleSubject, fetchDocument } from 'plandoc';
 
-export function useProfile() {
+export function useProfile(podData?: PodData) {
   const [profile, setProfile] = React.useState<TripleSubject>();
 
   React.useEffect(() => {
-    fetchProfile().then((fetchedProfile) => {
-      if (fetchedProfile === null) {
+    if (!podData) {
+      return;
+    }
+
+    fetchDocument(podData.profileDoc).then((fetchedProfileDoc) => {
+      const profile = fetchedProfileDoc?.getSubject(podData.webId);
+      if (!fetchedProfileDoc || !profile) {
         return;
       }
-      setProfile(fetchedProfile);
+      setProfile(profile);
     });
-  }, []);
+  }, [podData]);
 
   return profile;
 }

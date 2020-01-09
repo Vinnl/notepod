@@ -1,4 +1,4 @@
-import { TripleDocument, Reference } from 'tripledoc';
+import { TripleDocument, Reference } from 'plandoc';
 import { rdf, solid } from 'rdf-namespaces';
 
 export async function addToTypeIndex (

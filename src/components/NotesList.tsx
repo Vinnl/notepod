@@ -1,53 +1,57 @@
 import React from 'react';
-import { addNote } from '../services/addNote';
-import { getNotes, useNotesList } from '../hooks/useNotesList';
-import { TripleSubject, TripleDocument } from 'tripledoc';
+import { TripleSubject, TripleDocument } from 'plandoc';
 import { schema } from 'rdf-namespaces';
-import { Note } from './Note';
 import deleteIcon from 'material-design-icons/action/svg/production/ic_delete_48px.svg';
+import { addNote } from '../services/addNote';
+import { Note } from './Note';
+import { PodData } from '../services/getPodData';
+import { useDocument } from '../hooks/useDocument';
 
-export const NotesList: React.FC = () => {
-  const notesList = useNotesList();
+interface Props {
+  podData: PodData;
+};
+
+export const NotesList: React.FC<Props> = (props) => {
+  const [notesList, updateNotesList] = useDocument(props.podData.notesDoc);
   const [formContent, setFormContent] = React.useState('');
-  const [updatedNotesList, setUpdatedNotesList] = React.useState<TripleDocument>();
 
   if (!notesList) {
     return null;
   }
-  const notes = getNotes(updatedNotesList ?? notesList);
+  const notes = getNotes(notesList);
 
   async function saveNote(event: React.FormEvent) {
     event.preventDefault();
     if (!notesList) {
       return;
     }
-    const updatedDoc = await addNote(formContent, updatedNotesList ?? notesList);
-    setUpdatedNotesList(updatedDoc);
+    const updatedDoc = await addNote(formContent, notesList);
+    updateNotesList(updatedDoc);
     setFormContent('');
   }
 
   async function editNote(content: string, note: TripleSubject) {
-    const notesDocument = updatedNotesList || notesList;
+    const notesDocument = notesList;
     if (!notesDocument) {
       return;
     }
 
-    note.setLiteral(schema.text, content);
-    note.setLiteral(schema.dateModified, new Date(Date.now()));
+    note.setString(schema.text, content);
+    note.setDateTime(schema.dateModified, new Date(Date.now()));
     const updatedDoc = await notesDocument.save();
-    setUpdatedNotesList(updatedDoc);
+    updateNotesList(updatedDoc);
     return updatedDoc.getSubject(note.asRef());
   }
 
   async function deleteNote(note: TripleSubject) {
-    const notesDocument = updatedNotesList || notesList;
+    const notesDocument = notesList;
     if (!notesDocument) {
       return;
     }
 
     notesDocument.removeSubject(note.asRef());
     const updatedDoc = await notesDocument.save();
-    setUpdatedNotesList(updatedDoc);
+    updateNotesList(updatedDoc);
   }
 
   const noteElements = notes.sort(byDate).map((note) => (
@@ -114,4 +118,8 @@ function byDate(note1: TripleSubject, note2: TripleSubject): number {
   }
 
   return date2.getTime() - date1.getTime();
+}
+
+function getNotes(notesList: TripleDocument): TripleSubject[] {
+  return notesList.getSubjectsOfType(schema.TextDigitalDocument);
 }
