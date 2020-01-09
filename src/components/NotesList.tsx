@@ -73,6 +73,9 @@ export const NotesList: React.FC = () => {
     </div>
   ));
 
+  const newLines = formContent.match(/\n/g) ?? [];
+  const textareaRows = newLines ? Math.min(Math.max(newLines.length + 1, 5), 25) : 5;
+
   return (
     <>
       <section className="section">
@@ -85,6 +88,7 @@ export const NotesList: React.FC = () => {
                 id="note"
                 className="textarea"
                 value={formContent}
+                rows={textareaRows}
               />
             </div>
           </div>

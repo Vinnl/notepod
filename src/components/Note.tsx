@@ -34,6 +34,9 @@ export const Note: React.FC<Props> = (props) => {
   if (isEditing) {
     const isLoading = isSubmitting ? 'is-loading' : '';
 
+    const newLines = formContent.match(/\n/g) ?? [];
+    const textareaRows = newLines ? Math.min(Math.max(newLines.length + 1, 5), 25) : 5;
+
     return <>
       <form onSubmit={saveNote} className="content">
         <div className="field">
@@ -45,6 +48,7 @@ export const Note: React.FC<Props> = (props) => {
               className="textarea"
               value={formContent}
               disabled={isSubmitting}
+              rows={textareaRows}
             />
           </div>
         </div>
