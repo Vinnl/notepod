@@ -78,7 +78,7 @@ export const NotesList: React.FC<Props> = (props) => {
             mode={notesInEditMode.includes(note.asRef()) ? 'editing' : 'viewing'}
           />
         </div>
-        <div className="column is-narrow">
+        <div className="column is-narrow is-2-desktop">
           <nav className="panel">
             {/* Bulma expects an <a>, so I added role="button":  */}
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
