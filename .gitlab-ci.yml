@@ -6,6 +6,13 @@ cache:
   paths:
   - node_modules/
 
+test:
+  image: node:10
+  stage: test
+  script:
+  - yarn
+  - yarn test
+
 build:
   image: node:10
   stage: build
@@ -25,4 +32,3 @@ build:
     paths:
     - node_modules
     - public
-
