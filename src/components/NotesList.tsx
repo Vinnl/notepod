@@ -1,6 +1,7 @@
 import React from 'react';
-import { TripleSubject, TripleDocument } from 'plandoc';
+import { TripleSubject, TripleDocument, Reference } from 'plandoc';
 import { schema } from 'rdf-namespaces';
+import editIcon from 'material-design-icons/image/svg/production/ic_edit_48px.svg';
 import deleteIcon from 'material-design-icons/action/svg/production/ic_delete_48px.svg';
 import { addNote } from '../services/addNote';
 import { Note } from './Note';
@@ -14,6 +15,15 @@ interface Props {
 export const NotesList: React.FC<Props> = (props) => {
   const [notesList, updateNotesList] = useDocument(props.podData.notesDoc);
   const [formContent, setFormContent] = React.useState('');
+  const [notesInEditMode, setEditMode] = React.useReducer(
+    (prevState: Reference[], [note, editMode]: [Reference, boolean]) => {
+      if (editMode) {
+        return prevState.concat(note);
+      }
+      return prevState.filter((ref: Reference) => ref !== note);
+    },
+    [] as Reference[],
+  );
 
   if (!notesList) {
     return null;
@@ -39,7 +49,10 @@ export const NotesList: React.FC<Props> = (props) => {
     note.setString(schema.text, content);
     note.setDateTime(schema.dateModified, new Date(Date.now()));
     const updatedDoc = await notesDocument.save();
-    updateNotesList(updatedDoc);
+    if (updatedDoc) {
+      setEditMode([note.asRef(), false])
+      updateNotesList(updatedDoc);
+    }
     return updatedDoc.getSubject(note.asRef());
   }
 
@@ -61,10 +74,25 @@ export const NotesList: React.FC<Props> = (props) => {
           <Note
             note={note}
             onChange={(updatedContent) => editNote(updatedContent, note)}
+            onCancelEdit={() => setEditMode([note.asRef(), false])}
+            mode={notesInEditMode.includes(note.asRef()) ? 'editing' : 'viewing'}
           />
         </div>
         <div className="column is-narrow">
           <nav className="panel">
+            {/* Bulma expects an <a>, so I added role="button":  */}
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a
+              onClick={() => setEditMode([note.asRef(), true])}
+              title="Edit this note"
+              className="panel-block"
+              role="button"
+            >
+              <span className="panel-icon">
+                <img src={editIcon} alt=""/>
+              </span>
+              Edit
+            </a>
             {/* Bulma expects an <a>, so I added role="button":  */}
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a

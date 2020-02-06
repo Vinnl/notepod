@@ -6,10 +6,11 @@ import { schema } from 'rdf-namespaces';
 interface Props {
   note: TripleSubject;
   onChange: (updatedContent: string) => Promise<TripleSubject | undefined>;
+  onCancelEdit: () => void;
+  mode?: 'viewing' | 'editing';
 };
 
 export const Note: React.FC<Props> = (props) => {
-  const [isEditing, setIsEditing] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [note, setNote] = React.useState(props.note.getString(schema.text));
   const [formContent, setFormContent] = React.useState(note || '');
@@ -21,17 +22,15 @@ export const Note: React.FC<Props> = (props) => {
     const updatedNote = await props.onChange(formContent);
     if (updatedNote) {
       setNote(updatedNote.getString(schema.text));
-      // Only stop editing if the note was saved successfully:
-      setIsEditing(false);
     }
     setIsSubmitting(false);
   };
 
   const cancelEdit: React.MouseEventHandler = (event) => {
-    setIsEditing(false);
+    props.onCancelEdit();
   };
 
-  if (isEditing) {
+  if (props.mode === 'editing') {
     const isLoading = isSubmitting ? 'is-loading' : '';
 
     const newLines = formContent.match(/\n/g) ?? [];
@@ -71,12 +70,7 @@ export const Note: React.FC<Props> = (props) => {
   }
 
   return <>
-    <article
-      className="card"
-      role="button"
-      style={{cursor: 'pointer'}}
-      onClick={() => setIsEditing(true)}
-    >
+    <article className="card">
       <div className="section content">
         <Markdown source={note || ''}/>
       </div>
