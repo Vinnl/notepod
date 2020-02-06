@@ -1,6 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import { TripleSubject } from 'tripledoc';
+import { TripleSubject } from 'plandoc';
 import { schema } from 'rdf-namespaces';
 
 interface Props {

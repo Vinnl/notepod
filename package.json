@@ -13,14 +13,14 @@
     "bulma": "^0.7.5",
     "material-design-icons": "^3.0.1",
     "node-sass": "^4.12.0",
+    "plandoc": "^1.0.0",
     "rdf-namespaces": "^1.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-markdown": "^4.2.2",
     "react-scripts": "^3.3.0",
     "solid-auth-client": "^2.3.0",
-    "tripledoc": "^4.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -6,17 +6,19 @@ cache:
   paths:
   - node_modules/
 
+test:
+  image: node:10
+  stage: test
+  script:
+  - npm install
+  - npm test
+
 build:
   image: node:10
   stage: build
   script:
-  - yarn
-    # When the CI flag is set to `true` (which it is by default), warnings are treated as errors.
-    # Unfortunately, some of the rdflib dependencies depend on outdated libraries, which are spewing
-    # some Webpack errors. I don't want to eject to fix those warnings, or track down all relevant
-    # dependencies to submit pull requests to update _their_ dependencies, so since the warnings
-    # pertain to code we're not running anyway, let's ignore them for now (`CI=`):
-  - CI= yarn run build
+  - npm install
+  - npm run build
   # Artifacts to be published should go into the `public` folder,
   # but that already contains static assets. Thus, move that first:
   - mv public public~
@@ -25,4 +27,3 @@ build:
     paths:
     - node_modules
     - public
-
