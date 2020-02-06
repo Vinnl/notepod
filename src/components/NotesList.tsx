@@ -55,26 +55,34 @@ export const NotesList: React.FC<Props> = (props) => {
   }
 
   const noteElements = notes.sort(byDate).map((note) => (
-    <div key={note.asRef()} className="media">
-      <div className="media-content">
-        <Note
-          note={note}
-          onChange={(updatedContent) => editNote(updatedContent, note)}
-        />
-        <p className="has-text-right">
-          <button
-            onClick={() => deleteNote(note)}
-            title="Delete this note"
-            className="button is-text"
-            style={{textDecoration: 'none'}}
-          >
-            <span className="icon is-small">
-              <img src={deleteIcon} alt="Delete this note"/>
-            </span>
-          </button>
-        </p>
+    <>
+      <div className="columns">
+        <div className="column">
+          <Note
+            note={note}
+            onChange={(updatedContent) => editNote(updatedContent, note)}
+          />
+        </div>
+        <div className="column is-narrow">
+          <nav className="panel">
+            {/* Bulma expects an <a>, so I added role="button":  */}
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a
+              onClick={() => deleteNote(note)}
+              title="Delete this note"
+              className="panel-block"
+              role="button"
+            >
+              <span className="panel-icon">
+                <img src={deleteIcon} alt=""/>
+              </span>
+              Delete
+            </a>
+          </nav>
+        </div>
       </div>
-    </div>
+      <hr/>
+    </>
   ));
 
   const newLines = formContent.match(/\n/g) ?? [];
