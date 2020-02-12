@@ -7,6 +7,7 @@ import { addNote } from '../services/addNote';
 import { Note } from './Note';
 import { PodData } from '../services/getPodData';
 import { useDocument } from '../hooks/useDocument';
+import { NewNote } from './NewNote';
 
 interface Props {
   podData: PodData;
@@ -14,7 +15,6 @@ interface Props {
 
 export const NotesList: React.FC<Props> = (props) => {
   const [notesList, updateNotesList] = useDocument(props.podData.notesDoc);
-  const [formContent, setFormContent] = React.useState('');
   const [notesInEditMode, setEditMode] = React.useReducer(
     (prevState: Reference[], [note, editMode]: [Reference, boolean]) => {
       if (editMode) {
@@ -30,14 +30,13 @@ export const NotesList: React.FC<Props> = (props) => {
   }
   const notes = getNotes(notesList);
 
-  async function saveNote(event: React.FormEvent) {
-    event.preventDefault();
+
+  async function saveNote(content: string) {
     if (!notesList) {
       return;
     }
-    const updatedDoc = await addNote(formContent, notesList);
+    const updatedDoc = await addNote(content, notesList);
     updateNotesList(updatedDoc);
-    setFormContent('');
   }
 
   async function editNote(content: string, note: TripleSubject) {
@@ -113,31 +112,10 @@ export const NotesList: React.FC<Props> = (props) => {
     </React.Fragment>
   ));
 
-  const newLines = formContent.match(/\n/g) ?? [];
-  const textareaRows = newLines ? Math.min(Math.max(newLines.length + 1, 5), 25) : 5;
-
   return (
     <>
       <section className="section">
-        <form onSubmit={saveNote}>
-          <div className="field">
-            <div className="control">
-              <textarea
-                onChange={(e) => { e.preventDefault(); setFormContent(e.target.value); }}
-                name="note"
-                id="note"
-                className="textarea"
-                value={formContent}
-                rows={textareaRows}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <div className="control">
-              <button type="submit" className="button is-primary">Add note</button>
-            </div>
-          </div>
-        </form>
+        <NewNote onSave={saveNote}/>
       </section>
       <section className="section">
         {noteElements}
