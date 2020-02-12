@@ -68,7 +68,7 @@ export const NotesList: React.FC<Props> = (props) => {
   }
 
   const noteElements = notes.sort(byDate).map((note) => (
-    <>
+    <React.Fragment key={note.asRef()}>
       <div className="columns">
         <div className="column">
           <Note
@@ -110,7 +110,7 @@ export const NotesList: React.FC<Props> = (props) => {
         </div>
       </div>
       <hr/>
-    </>
+    </React.Fragment>
   ));
 
   const newLines = formContent.match(/\n/g) ?? [];
