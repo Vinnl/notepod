@@ -30,7 +30,6 @@ export const NotesList: React.FC<Props> = (props) => {
   }
   const notes = getNotes(notesList);
 
-
   async function saveNote(content: string) {
     if (!notesList) {
       return;
@@ -124,14 +123,25 @@ export const NotesList: React.FC<Props> = (props) => {
   );
 };
 
-function byDate(note1: TripleSubject, note2: TripleSubject): number {
-  const date1 = note1.getDateTime(schema.dateCreated);
-  const date2 = note2.getDateTime(schema.dateCreated);
-  if (!(date1 instanceof Date) || !(date2 instanceof Date)) {
-    return 0;
+function byDate(noteA: TripleSubject, noteB: TripleSubject) {
+  const updatedDateA = noteA.getDateTime(schema.dateModified);
+  const updatedDateB = noteB.getDateTime(schema.dateModified);
+  const createdDateA = noteA.getDateTime(schema.dateCreated);
+  const createdDateB = noteB.getDateTime(schema.dateCreated);
+
+  const latestA = updatedDateA ?? createdDateA;
+  const latestB = updatedDateB ?? createdDateB;
+  if (latestB === null) {
+    // No date known for B - A comes first
+    return -1;
+  }
+  if (latestA === null) {
+    // Date known for B but not for A - B comes first
+    return 1;
   }
 
-  return date2.getTime() - date1.getTime();
+  // Whichever was latest comes first:
+  return latestB.getTime() - latestA.getTime();
 }
 
 function getNotes(notesList: TripleDocument): TripleSubject[] {
