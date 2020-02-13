@@ -13,6 +13,7 @@ export const NewNote: React.FC<Props> = (props) => {
 
     setIsSubmitting(true);
     await props.onSave(formContent);
+    setFormContent('');
     setIsSubmitting(false);
   };
 
